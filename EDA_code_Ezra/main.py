@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from crime_weight import crime_weights
 
 # Cleaning dataset
-df_london = pd.read_csv("london_all_data_uncleaned.csv")
+df_london = pd.read_csv("EDA_code_Ezra/london_all_data_uncleaned.csv")
 missing_attributes = (df_london.isna().sum().to_frame(name="missing_count")).copy()
 missing_attributes["missing_percent"] = (missing_attributes["missing_count"] / len(df_london)) * 100
 df_london = df_london.drop(columns=["Context"])
@@ -23,6 +23,9 @@ missing_data_month_procent["missing_percent"] = (missing_data_month_procent["mis
 
 missing_data_crime_type_procent = (missing_data_crime.merge(type_of_crimes, on="Crime type"))
 missing_data_crime_type_procent["missing_percent"] = (missing_data_crime_type_procent["missing_rows"] / missing_data_crime_type_procent["crime_count"] * 100)
+
+duplicate_count = df_london.duplicated().sum()
+duplicate_procent = duplicate_count/len(df_london)*100
 
 # df_london = df_london.dropna(subset=["LSOA code"])
 # df_crime_by_lsao = (df_london.groupby(["LSOA code", "LSOA name"]).agg(crime_score=("crime_weight", "sum"), total_crimes=("crime_weight", "count")).reset_index())
@@ -43,7 +46,12 @@ info = {
         "missing_data_crime_type_procent": missing_data_crime_type_procent.to_dict(),
         "missing_attributes": missing_attributes.to_dict()
     },
+
+    "duplicate_data": {
+        "duplicate_rows": int(duplicate_count),
+        "duplicate_rows_procent": float(round(duplicate_procent, 2))
+    }
 }
 
-with open("info.json", "w") as f:
+with open("EDA_code_Ezra/info.json", "w") as f:
     json.dump(info, f, indent=4)

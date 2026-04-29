@@ -476,5 +476,9 @@
                 "Context": 100.0
             }
         }
+    },
+    "duplicate_data": {
+        "duplicate_rows": 323512,
+        "duplicate_rows_procent": 9.47
     }
 }
