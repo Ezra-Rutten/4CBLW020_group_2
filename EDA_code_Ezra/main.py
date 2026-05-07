@@ -5,6 +5,7 @@ from crime_weight import crime_weights
 
 # Cleaning dataset
 df_london = pd.read_csv("EDA_code_Ezra/london_all_data_uncleaned.csv")
+
 missing_attributes = (df_london.isna().sum().to_frame(name="missing_count")).copy()
 missing_attributes["missing_percent"] = (missing_attributes["missing_count"] / len(df_london)) * 100
 df_london = df_london.drop(columns=["Context"])
