@@ -14,6 +14,7 @@ for month_dir in base_path.iterdir():
             all_dfs.append(df)
 
 df_london = pd.concat(all_dfs, ignore_index=True)
+Path("../data/processed").mkdir(parents=True, exist_ok=True)
 df_london.to_csv("../data/processed/london_all_data_uncleaned.csv", index=False)
 
 print("Saved dataset with rows:", len(df_london))
