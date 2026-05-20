@@ -1,25 +1,9 @@
-import requests
-import csv
-import time
 import pandas as pd
-from shapely.geometry import Point
-import requests
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import json
-import csv
-import time
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
 import geopandas as gpd
-import matplotlib.pyplot as plt
 import glob
 import os
 import geopandas as gpd
 import pandas as pd
-from shapely.geometry import Point
-from pathlib import Path
-
 
 # Reading LSOA shapes
 base_path = "../data/LB_shp"
