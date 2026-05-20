@@ -1,0 +1,21 @@
+# Data files
+backend/data/raw/
+backend/data/processed/
+
+# Shapefiles
+backend/data/LB_shp/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
