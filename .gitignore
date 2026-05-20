@@ -1,6 +1,8 @@
 # Data files
 backend/data/raw/
 backend/data/processed/
+london_all_data_uncleaned.csv
+dataset/
 
 # Shapefiles
 backend/data/LB_shp/
@@ -8,13 +10,37 @@ backend/data/LB_shp/
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.egg-info/
+.eggs/
+build/
+dist/
 .env
+.env.*
 venv/
 .venv/
+env/
+ENV/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# Logs
+*.log
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
