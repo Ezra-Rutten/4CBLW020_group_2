@@ -105,7 +105,7 @@ lsoa_london = lsoa_london.to_crs(epsg=27700)
 lsoa_london["centroid"] = lsoa_london.geometry.centroid
 lsoa_centroids = lsoa_london.set_geometry("centroid")
 
-stations_df = pd.read_csv("police_stations.csv")
+stations_df = pd.read_csv("../data/shape/police_stations.csv")
 
 stations_gdf = gpd.GeoDataFrame(
     stations_df,
