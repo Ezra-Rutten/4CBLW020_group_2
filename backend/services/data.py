@@ -19,6 +19,7 @@ for component in components:
 
     if all_dfs:
         df_component = pd.concat(all_dfs, ignore_index=True)
+        df_component["Borough"] = df_component["LSOA name"].str.replace(r'\s\d.*$', '', regex=True)
         component_dfs[component] = df_component
         df_component.to_csv(f"../data/processed/{component}_all_data_uncleaned.csv", index=False)
         print(f"Saved {component} with rows:", len(df_component))
