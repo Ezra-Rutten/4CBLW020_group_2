@@ -69,7 +69,7 @@ stations = [
     ("Marsh Lane Police Station", "L20 5BW", "merseyside")
 ]
 
-OUTPUT_FILE = "police_stations.csv"
+OUTPUT_FILE = "../data/shape/police_stations.csv"
 
 with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as csvfile:
     writer = csv.writer(csvfile)
