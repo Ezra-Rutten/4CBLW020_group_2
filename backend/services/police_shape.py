@@ -105,7 +105,7 @@ lsoa_london = lsoa_london.to_crs(epsg=27700)
 lsoa_london["centroid"] = lsoa_london.geometry.centroid
 lsoa_centroids = lsoa_london.set_geometry("centroid")
 
-stations_df = pd.read_csv("metropolitan_police_stations.csv")
+stations_df = pd.read_csv("police_stations.csv")
 
 stations_gdf = gpd.GeoDataFrame(
     stations_df,
@@ -124,7 +124,7 @@ lsoa_with_station = gpd.sjoin_nearest(
 )
 
 lsoa_station_map = lsoa_with_station[
-    ["lsoa21cd", "station", "distance_to_station"]
+    ["LSOA21CD", "station", "distance_to_station"]
 ]
 
-lsoa_station_map.to_csv("lsoa_station_map.csv", index=False)
+lsoa_station_map.to_csv("../data/shape/lsoa_station_map.csv", index=False)
