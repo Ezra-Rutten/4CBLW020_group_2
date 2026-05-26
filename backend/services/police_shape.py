@@ -2,29 +2,19 @@ import requests
 import csv
 import time
 import pandas as pd
-from shapely.geometry import Point
 import requests
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import json
 import csv
 import time
-import folium
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
 import geopandas as gpd
-import matplotlib.pyplot as plt
 import glob
 import os
 import geopandas as gpd
 import pandas as pd
-from shapely.geometry import Point
 
 stations = [
+    # London
     ("Acton Police Station", "W3 9BH"),
-    ("Barking Learning Centre", "IG11 7NB"),
     ("Bethnal Green Police Station", "E2 9NZ"),
-    ("Bexleyheath Police Station", "DA7 4QS"),
     ("Brixton Police Station", "SW9 7DD"),
     ("Bromley Police Station", "BR1 1ER"),
     ("Charing Cross Police Station", "WC2N 4JP"),
@@ -33,31 +23,53 @@ stations = [
     ("Croydon Police Station", "CR9 1BP"),
     ("Dagenham Police Station", "RM10 7TU"),
     ("Edmonton Police Station", "N9 0PW"),
-    ("Forest Gate Police Station", "E7 8BS"),
     ("Hammersmith Police Station", "W6 7NX"),
-    ("Harrow Police Station", "HA2 0DN"),
     ("Hayes Police Station", "UB4 8HU"),
-    ("Hounslow Police Station", "TW3 1LB"),
-    ("Ilford Police Station", "IG1 1GT"),
     ("Islington Police Station", "N1 0YY"),
-    ("Kensington Police Station", "W8 6EQ"),
-    ("Kentish Town Police Station", "NW5 3AE"),
-    ("Kingston Police Station", "KT1 1LB"),
     ("Lavender Hill Police Station", "SW11 1JX"),
     ("Lewisham Police Station", "SE13 5JZ"),
-    ("Mitcham Police Station", "CR4 4LA"),
     ("Plumstead Police Station", "SE18 1JY"),
-    ("Romford Police Station", "RM1 3BJ"),
     ("Stoke Newington Police Station", "N16 8DS"),
     ("Sutton Police Station", "SM1 4RF"),
-    ("Tottenham Police Station", "N17 9ES"),
+    ("Stratford Police Station", "E15 4SG"),
     ("Twickenham Police Station", "TW1 3SY"),
     ("Walworth Police Station", "SE17 3BB"),
     ("Wembley Police Station", "HA0 2HH"),
-    ("Wimbledon Police Station", "SW19 8NN")
+    # Birmingham
+    ("Bournville Police Station", "B30 1QX"),
+    ("Stechford Police Station", "B33 8RR"),
+    ("Sutton Coldfield Police Station", "B74 2NR"),
+    ("Coventry Central Police Station", "CV1 2JX"),
+    ("Brierley Hill Police Station", "DY5 3DH"),
+    ("West Bromwich Police Station", "B70 8HS"),
+    ("Solihull Police Station", "B91 3QL"),
+    ("Bloxwich Police Station", "WS3 2PD"),
+    ("Wolverhampton Police Station", "WV1 3AA"),
+    # Leeds
+    ("Leeds District HQ Police Station", "LS11 8BU"),
+    ("Wakefield District HQ Police Station", "WF6 1FD"),
+    ("Bradford District HQ Police Station", "BD5 0DZ"),
+    ("Halifax District HQ Police Station", "HX1 5TW"),
+    ("Kirklees District HQ Police Station", "HD1 2NJ"),
+    # Sheffield
+    ("Snig Hill Police Station", "S3 8LY"),
+    ("Rotherham Police Station", "S60 1QY"),
+    ("Barnsley Police Station", "S70 2DL"),
+    ("Doncaster Police Station", "DN1 3HX"),
+    # Liverpool
+    ("St Annes Street Police Station", "L3 3HJ"),
+    ("Birkenhead Police Station", "CH41 5EU"),
+    ("Huyton Police Station", "L36 9XU"),
+    ("St Helens Police Station", "WA10 1TG"),
+    ("Southport Police Station", "PR9 0LL"),
+    ("Admiral Street Police Station", "L8 8JN"),
+    ("Wallasey Police Station", "CH44 1DA"),
+    ("Kirkby Police Station", "L32 8RF"),
+    ("Newton-Le-Willows Police Station", "WA12 9BW"),
+    ("Marsh Lane Police Station", "L20 5BW")
 ]
 
-OUTPUT_FILE = "metropolitan_police_stations.csv"
+OUTPUT_FILE = "police_stations.csv"
 
 with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as csvfile:
     writer = csv.writer(csvfile)
