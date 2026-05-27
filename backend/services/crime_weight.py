@@ -1,4 +1,4 @@
-# Currently not based on research, but filled in "randomly"
+# Based on CCHI index median
 crime_weights = {
   "Violence and sexual offences": 182,
   "Robbery": 365,
