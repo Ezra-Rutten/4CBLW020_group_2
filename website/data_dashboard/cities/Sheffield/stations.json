@@ -1,0 +1,50 @@
+[
+  {
+    "station": "Snig Hill Police Station",
+    "postcode": "S3 8LY",
+    "force": "South Yorkshire Police",
+    "latitude": 53.383,
+    "longitude": -1.466,
+    "pressure": 2.85,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 0.6,
+    "predicted_severity": 2970
+  },
+  {
+    "station": "Rotherham Police Station",
+    "postcode": "S60 1QY",
+    "force": "South Yorkshire Police",
+    "latitude": 53.43,
+    "longitude": -1.36,
+    "pressure": 2.29,
+    "risk": "Orange",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 1.1,
+    "predicted_severity": 2528
+  },
+  {
+    "station": "Barnsley Police Station",
+    "postcode": "S70 2DL",
+    "force": "South Yorkshire Police",
+    "latitude": 53.552,
+    "longitude": -1.479,
+    "pressure": 1.77,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 0.0,
+    "predicted_severity": 2135
+  },
+  {
+    "station": "Doncaster Police Station",
+    "postcode": "DN1 3HX",
+    "force": "South Yorkshire Police",
+    "latitude": 53.523,
+    "longitude": -1.132,
+    "pressure": 1.81,
+    "risk": "Orange",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 0.5,
+    "predicted_severity": 2292
+  }
+]

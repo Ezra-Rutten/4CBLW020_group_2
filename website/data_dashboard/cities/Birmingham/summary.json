@@ -1,0 +1,10 @@
+{
+  "city": "Birmingham",
+  "police_force": "West Midlands Police",
+  "center": [
+    52.4862,
+    -1.8904
+  ],
+  "note": "Prepared with West Midlands stations from the group station code.",
+  "incident_estimate": 280800
+}

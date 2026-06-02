@@ -1,0 +1,23 @@
+station,postcode,force,latitude,longitude,pressure,risk,main_demand_profile,forecast_trend_pct,predicted_severity
+Acton Police Station,W3 9BH,Metropolitan Police,51.507,-0.27,2.25,Orange,Retail and theft demand,0.3,2370
+Bethnal Green Police Station,E2 9NZ,Metropolitan Police,51.526,-0.061,2.54,Orange,Property investigation demand,0.8,2783
+Brixton Police Station,SW9 7BD,Metropolitan Police,51.462,-0.115,2.29,Orange,Retail and theft demand,-0.3,2646
+Bromley Police Station,BR1 1ER,Metropolitan Police,51.406,0.014,2.58,Orange,Property investigation demand,0.2,3060
+Charing Cross Police Station,WC2N 4JP,Metropolitan Police,51.507,-0.124,4.77,Red,Retail and theft demand,0.7,5370
+Chingford Police Station,E4 7EA,Metropolitan Police,51.633,0.009,2.07,Orange,Property investigation demand,1.2,2786
+Colindale Police Station,NW9 5TW,Metropolitan Police,51.596,-0.249,2.36,Orange,Retail and theft demand,0.1,3199
+Croydon Police Station,CR9 1BP,Metropolitan Police,51.372,-0.098,2.1,Orange,Property investigation demand,0.6,3062
+Dagenham Police Station,RM10 7TU,Metropolitan Police,51.546,0.162,1.85,Orange,Retail and theft demand,1.1,2925
+Edmonton Police Station,N9 0PW,Metropolitan Police,51.627,-0.061,2.14,Orange,Property investigation demand,0.0,3339
+Hammersmith Police Station,W6 7NX,Metropolitan Police,51.493,-0.224,1.88,Orange,Retail and theft demand,0.5,3202
+Hayes Police Station,UB4 8HU,Metropolitan Police,51.512,-0.421,1.62,Yellow,Property investigation demand,1.0,3065
+Islington Police Station,N1 0YY,Metropolitan Police,51.534,-0.106,1.92,Orange,Retail and theft demand,-0.1,3478
+Lavender Hill Police Station,SW11 1JX,Metropolitan Police,51.465,-0.164,1.66,Orange,Property investigation demand,0.4,3341
+Lewisham Police Station,SE13 5JZ,Metropolitan Police,51.462,-0.011,1.95,Orange,Retail and theft demand,0.9,3755
+Plumstead Police Station,SE18 1JY,Metropolitan Police,51.488,0.082,1.7,Orange,Property investigation demand,-0.2,3618
+Stoke Newington Police Station,N16 8DS,Metropolitan Police,51.561,-0.079,1.44,Yellow,Retail and theft demand,0.3,3481
+Sutton Police Station,SM1 4RF,Metropolitan Police,51.361,-0.194,1.73,Orange,Property investigation demand,0.8,3894
+Stratford Police Station,E15 4SG,Metropolitan Police,51.542,-0.003,1.48,Yellow,Retail and theft demand,-0.3,3757
+Twickenham Police Station,TW1 3SY,Metropolitan Police,51.446,-0.327,1.22,Yellow,Property investigation demand,0.2,3620
+Walworth Police Station,SE17 3BB,Metropolitan Police,51.488,-0.093,1.51,Yellow,Retail and theft demand,0.7,4034
+Wembley Police Station,HA0 2HH,Metropolitan Police,51.552,-0.296,1.26,Yellow,Property investigation demand,1.2,3897
