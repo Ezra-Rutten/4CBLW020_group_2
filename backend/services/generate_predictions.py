@@ -10,14 +10,14 @@ from budget_allocation import allocate_budget
 from crime_weight import crime_weights
 
 
-def generate_predictions(
-    data_path: str = "../data/processed/metropolitan_all_data_uncleaned.csv",
-    model_path: str = "../models/prediction_model.pkl",
-    lsoa_station_path: str = "../data/shape/lsoa_station_map.csv",
-    police_stations_path: str = "../data/shape/police_stations.csv",
-    predictions_output: str = "../data/processed/lsoa_crime_predictions.csv",
-    budget_output: str = "../data/allocation/budget_allocation.csv",
-):
+def generate_predictions(city: str):
+    data_path: str = "../data/processed/"+city+"_all_data_uncleaned.csv"
+    model_path: str = "../models/prediction_model.pkl"
+    lsoa_station_path: str = "../data/shape/lsoa_station_map.csv"
+    police_stations_path: str = "../data/shape/police_stations.csv"
+    predictions_output: str = "../data/processed/lsoa_crime_predictions.csv"
+    budget_output: str = "../data/allocation/"+city+"/budget_allocation.csv"
+
     model, le_crime, le_lsoa = load_model_and_encoders(data_path, model_path)
 
     lsoa_station = pd.read_csv(lsoa_station_path, usecols=["LSOA21CD", "station"])
@@ -60,7 +60,7 @@ def generate_predictions(
          "predicted_crime_count", "predicted_crime_severity"]
     ].rename(columns={"month_num": "month"})
 
-    out_df = out_df[out_df["police_force"] == "metropolitan"]
+    out_df = out_df[out_df["police_force"] == city]
     out_df.to_csv(predictions_output, index=False)
     print(f"Saved {len(out_df):,} rows to {predictions_output}")
 
@@ -72,4 +72,6 @@ def generate_predictions(
 
 
 if __name__ == "__main__":
-    generate_predictions()
+    cities = ["metropolitan", "merseyside", "west-midlands", "west-yorkshire", "south-yorkshire"]
+    for city in cities:
+        generate_predictions(city)
