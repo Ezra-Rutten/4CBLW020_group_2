@@ -7,7 +7,7 @@ def preprocess_data(
     output_path: str = "../data/processed"
 ):
     base_path = Path(raw_path)
-    components = ["metropolitan", "city-of-london", "merseyside", "west-midlands", "west-yorkshire", "south-yorkshire"]
+    components = ["metropolitan", "merseyside", "west-midlands", "west-yorkshire", "south-yorkshire"]
 
     Path(output_path).mkdir(parents=True, exist_ok=True)
 
