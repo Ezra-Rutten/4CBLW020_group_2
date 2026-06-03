@@ -5,7 +5,7 @@ from crime_weight import (
     crime_weights_social_services,
     crime_weights_negotiator,
     crime_weights_k9,
-    crime_weights_swat,
+    crime_weights_sfo,
 )
 
 # Specialist name -> per-crime weight lookup
@@ -14,7 +14,7 @@ SPECIALIST_WEIGHTS = {
     "social_services": crime_weights_social_services,
     "negotiator": crime_weights_negotiator,
     "k9": crime_weights_k9,
-    "swat": crime_weights_swat,
+    "swat": crime_weights_sfo,
 }
 
 
@@ -47,7 +47,7 @@ def allocate_budget(predictions_path: str, output_path: str) -> pd.DataFrame:
     )
 
     yearly_total = station_yearly["total_predicted_crime_severity"].sum()
-    station_yearly["budget_allocation_pct"] = (
+    station_yearly["base_allocation_pct"] = (
         station_yearly["total_predicted_crime_severity"] / yearly_total * 100
     ).round(4)
 
@@ -69,4 +69,4 @@ if __name__ == "__main__":
         output_path="../data/allocation/budget_allocation.csv",
     )
     print(result.head(20))
-    print(f"Total budget_allocation_pct sums to: {result['budget_allocation_pct'].sum():.2f}%")
+    print(f"Total base_allocation_pct sums to: {result['base_allocation_pct'].sum():.2f}%")

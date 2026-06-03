@@ -72,6 +72,6 @@ def generate_predictions(city: str):
 
 
 if __name__ == "__main__":
-    cities = ["metropolitan", "merseyside", "west-midlands", "west-yorkshire", "south-yorkshire"]
+    cities = ["metropolitan", "city-of-london", "merseyside", "west-midlands", "west-yorkshire", "south-yorkshire"]
     for city in cities:
         generate_predictions(city)

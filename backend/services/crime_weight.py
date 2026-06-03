@@ -89,7 +89,7 @@ crime_weights_k9 = {
   "Anti-social behaviour": 0
 }
 
-crime_weights_swat = {
+crime_weights_sfo = {
   "Violence and sexual offences": 10,
   "Robbery": 5,
   "Burglary": 0,

@@ -59,6 +59,8 @@ stations = [
     ("Kirkby Police Station", "L32 8RF", "merseyside"),
     ("Newton-Le-Willows Police Station", "WA12 9BW", "merseyside"),
     ("Marsh Lane Police Station", "L20 5BW", "merseyside"),
+    # City of London
+    ("Bishopsgate Police Station", "EC2M 4NP", "city-of-london")
 ]
 
 
