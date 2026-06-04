@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error
 import joblib
-
+import lightgbm as lgb
 
 def train_model(
     data_path: str = "../data/processed/all_data_uncleaned.csv",
@@ -40,28 +40,39 @@ def train_model(
     X_train, y_train = train[features], train[target]
     X_test, y_test = test[features], test[target]
 
-    model = xgb.XGBRegressor(
-        objective="count:poisson",
-        n_estimators=800,
-        learning_rate=0.03,
-        max_depth=4,
-        min_child_weight=10,
-        subsample=0.7,
-        colsample_bytree=0.7,
-        reg_alpha=0.1,
-        reg_lambda=1.5,
-        gamma=0.1,
-        random_state=42
+    train_data = lgb.Dataset(X_train, label=y_train, categorical_feature=["crime_type_enc", "lsoa_enc"])
+    test_data  = lgb.Dataset(X_test, label=y_test, reference=train_data, categorical_feature=["crime_type_enc", "lsoa_enc"])
+
+    params = {
+        "objective": "poisson",
+        "metric": "poisson",
+        "learning_rate": 0.03,
+        "max_depth": 4,
+        "num_leaves": 15,
+        "min_data_in_leaf": 10,
+        "bagging_fraction": 0.7,
+        "bagging_freq": 1,
+        "feature_fraction": 0.7,
+        "lambda_l1": 0.1,
+        "lambda_l2": 1.5,
+        "seed": 42,
+        "verbose": -1
+    }
+    num_round = 800
+    model = lgb.train(
+        params,
+        train_data,
+        num_boost_round=num_round,
+        valid_sets=[test_data]
     )
-    model.fit(X_train, y_train)
 
     preds = model.predict(X_test)
+
     rmse = np.sqrt(mean_squared_error(y_test, preds))
-    print(f"RMSE: {rmse:.2f}")
+    print(f"RMSE: {rmse:.2f}")    
 
     joblib.dump(model, output_path)
     print(f"Model saved to {output_path}")
-
 
 if __name__ == "__main__":
     train_model()

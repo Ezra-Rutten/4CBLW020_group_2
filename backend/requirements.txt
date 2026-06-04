@@ -8,3 +8,4 @@ folium
 shapely
 requests
 joblib
+lightgbm
