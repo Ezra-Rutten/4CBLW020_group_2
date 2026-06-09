@@ -15,7 +15,7 @@ def generate_predictions(city: str):
     model_path: str = "../models/prediction_model.pkl"
     lsoa_station_path: str = "../data/shape/lsoa_station_map.csv"
     police_stations_path: str = "../data/shape/police_stations.csv"
-    predictions_output: str = "../data/processed/lsoa_crime_predictions.csv"
+    predictions_output: str = "../data/processed/lsoa_crime_predictions_"+city+".csv"
     budget_output: str = "../data/allocation/"+city+"budget_allocation.csv"
 
     model, le_crime, le_lsoa = load_model_and_encoders(data_path, model_path)
