@@ -351,12 +351,6 @@
       font-weight: 800;
     }
 
-    .resource input[type="range"] {
-      grid-column: 1 / -1;
-      width: 100%;
-      padding: 0;
-      accent-color: var(--blue);
-    }
 
     .note {
       border: 1px solid #99d7bf;
@@ -1102,7 +1096,6 @@
     <div class="resource">
       <label for="resource-${item.key}">${esc(item.label)}</label>
       <input id="resource-${item.key}" type="number" min="0" max="250" value="${resources[item.key]}" data-key="${item.key}">
-      <input type="range" min="0" max="250" value="${resources[item.key]}" data-key="${item.key}" aria-label="${esc(item.label)}">
     </div>
   `).join('');
       document.querySelectorAll('#resources input').forEach(input => {
@@ -1110,9 +1103,6 @@
           const key = e.target.dataset.key;
           const value = clamp(Number(e.target.value) || 0, 0, 250);
           resources[key] = value;
-          document.querySelectorAll(`#resources input[data-key="${key}"]`).forEach(pair => {
-            if (pair !== e.target) pair.value = value;
-          });
           renderRecommendation();
           renderAllocationPanel();
           renderStations();
