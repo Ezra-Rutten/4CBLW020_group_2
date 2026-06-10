@@ -1,12 +1,15 @@
+// Each unit reads a backend % column carried on every station object (`field`).
+// General police use base_allocation_pct (derived from the normal crime_weights
+// via predicted severity); the specialists use their own demand-share columns
+// (mental_health/social_services/negotiator/k9/swat). Each slider value is the
+// TOTAL available headcount, split across stations by that backend share (%).
 const resourceTypes=[
-  {key:'mental',label:'Mental-health / welfare specialists',short:'Welfare',defaultValue:80},
-  {key:'social',label:'Social-services / domestic support',short:'Social',defaultValue:50},
-  {key:'armed',label:'Armed response units',short:'Armed',defaultValue:25},
-  {key:'violence',label:'Violence and safeguarding units',short:'V/S',defaultValue:45},
-  {key:'property',label:'Property-crime investigators',short:'Property',defaultValue:65},
-  {key:'retail',label:'Retail theft units',short:'Retail',defaultValue:40},
-  {key:'patrol',label:'Neighbourhood and public-order patrols',short:'Patrol',defaultValue:75},
-  {key:'mobile',label:'Mobile police units',short:'Mobile',defaultValue:130}
+  {key:'general',        field:'base_allocation_pct', label:'General police officers',            short:'General', defaultValue:200},
+  {key:'mental_health',  field:'mental_health',       label:'Mental-health / welfare specialists', short:'MH',      defaultValue:80},
+  {key:'social_services',field:'social_services',     label:'Social-services / domestic support',  short:'Social',  defaultValue:50},
+  {key:'negotiator',     field:'negotiator',          label:'Negotiators',                         short:'Negot',   defaultValue:20},
+  {key:'k9',             field:'k9',                  label:'K9 units',                            short:'K9',      defaultValue:30},
+  {key:'swat',           field:'swat',                label:'Armed / SWAT response units',         short:'SWAT',    defaultValue:25}
 ];
 const riskOrder=['Red','Orange','Yellow','Green'];
 const riskColors={Red:'#b91c1c',Orange:'#b45309',Yellow:'#a16207',Green:'#15803d'};
@@ -148,51 +151,21 @@ function renderResources(){
   });
 }
 
-function demandWeight(station,key){
-  const profile=String(station.main_demand_profile||'').toLowerCase();
-  const weights={mental:.9,social:.9,armed:.45,violence:.9,property:.9,retail:.9,patrol:.95,mobile:.95};
-  if(profile.includes('welfare')||profile.includes('public-order')){
-    weights.mental=1.45; weights.social=1.35; weights.patrol=1.25; weights.mobile=1.05; weights.armed=.5;
-  }
-  if(profile.includes('violence')||profile.includes('safeguarding')){
-    weights.violence=1.55; weights.social=1.2; weights.mental=1.15; weights.armed=1.05; weights.patrol=1.1;
-  }
-  if(profile.includes('property')){
-    weights.property=1.6; weights.mobile=1.05; weights.patrol=1.0; weights.retail=.75;
-  }
-  if(profile.includes('retail')||profile.includes('theft')){
-    weights.retail=1.65; weights.property=1.12; weights.patrol=1.15; weights.mobile=1.0;
-  }
-  if(profile.includes('mobile')){
-    weights.mobile=1.55; weights.patrol=1.2; weights.mental=.85; weights.property=.85;
-  }
-  if(profile.includes('mixed')||profile.includes('general')){
-    weights.patrol=1.25; weights.mobile=1.15; weights.social=1.05; weights.violence=1.05; weights.property=1.05;
-  }
-  return weights[key]||1;
-}
-
-function stationWeight(station,key){
-  const severity=Math.max(1,Number(station.predicted_severity)||1);
-  const pressureFactor=1+(Math.max(0,Number(station.pressure)||0)/8);
-  return severity*pressureFactor*demandWeight(station,key);
-}
-
 function stationAlloc(station){
-  const stations=city().stations;
-  return Object.fromEntries(resourceTypes.map(({key})=>{
-    const total=stations.reduce((sum,item)=>sum+stationWeight(item,key),0);
-    const allocation=total?Math.round(resources[key]*stationWeight(station,key)/total):0;
-    return [key,Math.max(0,allocation)];
+  // Per-station headcount for each unit = backend share (%) * available input.
+  // `field` is the station's % column for that unit (from the budget file).
+  return Object.fromEntries(resourceTypes.map(({key,field})=>{
+    const sharePct=Number(station[field])||0;
+    return [key,Math.max(0,Math.round(sharePct/100*resources[key]))];
   }));
 }
 
-function focusList(station,limit=4){
+function focusList(station,limit=resourceTypes.length){
   const allocation=stationAlloc(station);
   return resourceTypes
-    .map(item=>({label:item.short,value:allocation[item.key],priority:demandWeight(station,item.key)}))
+    .map(item=>({label:item.short,value:allocation[item.key]}))
     .filter(item=>item.value>0)
-    .sort((a,b)=>(b.priority-a.priority)||(b.value-a.value))
+    .sort((a,b)=>b.value-a.value)
     .slice(0,limit);
 }
 
@@ -203,7 +176,7 @@ function renderRecommendation(){
     return;
   }
   const focus=focusList(top,4).map(item=>`${esc(item.label)} ${fmt(item.value)}`).join(', ')||'No capacity set';
-  document.getElementById('recommendation').innerHTML=`Highest-priority station: <b>${esc(top.station)}</b><br>Main profile: ${esc(top.main_demand_profile)}. Suggested focus: ${focus}.`;
+  document.getElementById('recommendation').innerHTML=`Highest-priority station: <b>${esc(top.station)}</b><br>Suggested focus: ${focus}.`;
 }
 
 const SPECIALIST_KEYS=[
@@ -217,7 +190,7 @@ const SPECIALIST_KEYS=[
 function renderAllocationPanel(){
   const rows=[...city().stations].sort((a,b)=>b.pressure-a.pressure);
   document.getElementById('allocationPanel').innerHTML=rows.map(station=>{
-    const chips=focusList(station,4).map(item=>`<span class="alloc-chip">${esc(item.label)} ${fmt(item.value)}</span>`).join('')||'<span class="alloc-chip">No capacity set</span>';
+    const chips=focusList(station).map(item=>`<span class="alloc-chip">${esc(item.label)} ${fmt(item.value)}</span>`).join('')||'<span class="alloc-chip">No capacity set</span>';
     // Real backend allocation, carried on each station object from /api/city.
     const pct=Number(station.budget_allocation_pct||0);
     const budgetLine=` | backend budget <b>${pct.toFixed(2)}%</b>`;
@@ -229,7 +202,7 @@ function renderAllocationPanel(){
     return `<div class="alloc-row">
       <div>
         <div class="alloc-station">${esc(station.station)}</div>
-        <div class="alloc-sub">${esc(station.postcode)} | ${esc(station.main_demand_profile)} | predicted severity ${fmt(station.predicted_severity)}${budgetLine}</div>
+        <div class="alloc-sub">${esc(station.postcode)} | predicted severity ${fmt(station.predicted_severity)}${budgetLine}</div>
       </div>
       <div class="alloc-metrics">${chips}${specialistChips}</div>
     </div>`;
@@ -278,10 +251,10 @@ function renderStations(){
   const risk=document.getElementById('riskFilter').value;
   const pressureMax=maxPressure();
   const rows=city().stations
-    .filter(station=>(risk==='All'||station.risk===risk)&&(`${station.station} ${station.postcode} ${station.main_demand_profile}`.toLowerCase().includes(query)))
+    .filter(station=>(risk==='All'||station.risk===risk)&&(`${station.station} ${station.postcode}`.toLowerCase().includes(query)))
     .sort((a,b)=>b.pressure-a.pressure);
   if(!rows.length){
-    document.getElementById('stationRows').innerHTML='<tr><td colspan="7" class="empty-state">No stations match the current filter.</td></tr>';
+    document.getElementById('stationRows').innerHTML='<tr><td colspan="6" class="empty-state">No stations match the current filter.</td></tr>';
     return;
   }
   document.getElementById('stationRows').innerHTML=rows.map(station=>{
@@ -294,7 +267,6 @@ function renderStations(){
       <td><span class="badge ${riskClass(station.risk)}">${esc(station.risk)}</span></td>
       <td><div class="pressure"><span>${station.pressure.toFixed(2)}</span><span class="meter"><span style="width:${meterWidth}%;background:${riskColor(station.risk)}"></span></span></div></td>
       <td>${esc(forecast)}</td>
-      <td>${esc(station.main_demand_profile)}</td>
       <td>${focus}</td>
     </tr>`;
   }).join('');
@@ -322,7 +294,7 @@ function renderFolderDetail(){
     <h3 style="margin-top:18px">Police bureaus/stations in this folder</h3>
     <div class="station-list">${c.stations.map(station=>`
       <div class="station-card">
-        <div><b>${esc(station.station)}</b><br><span>${esc(station.postcode)} | ${esc(station.main_demand_profile)}</span></div>
+        <div><b>${esc(station.station)}</b><br><span>${esc(station.postcode)}</span></div>
         <span class="badge ${riskClass(station.risk)}">${esc(station.risk)}</span>
       </div>
     `).join('')}</div>`;

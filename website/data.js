@@ -6,18 +6,11 @@
 const API_BASE = location.protocol === 'file:' ? 'http://127.0.0.1:8000' : '';
 
 // --- Mock soft fields --------------------------------------------------------
-// risk / pressure / forecast-trend / demand-profile are NOT produced by the
-// backend yet. We synthesize stable placeholder values (deterministic per
-// station name) so the existing widgets keep working. TODO: replace with real
-// model output once those are implemented.
-const MOCK_PROFILES = [
-  'Retail and theft demand',
-  'Property investigation demand',
-  'Violence and safeguarding demand',
-  'Welfare and public-order demand',
-  'Mixed general demand'
-];
-
+// risk / pressure / forecast-trend are NOT produced by the backend yet. We
+// synthesize stable placeholder values (deterministic per station name) so the
+// existing widgets keep working. TODO: replace with real model output once those
+// are implemented. (The old main_demand_profile was an invented specialist
+// category not backed by crime_weight.py, so it has been removed.)
 function mockSoftFields(name){
   let h = 0;
   for (let i = 0; i < name.length; i++) { h = (h * 31 + name.charCodeAt(i)) >>> 0; }
@@ -27,7 +20,6 @@ function mockSoftFields(name){
   return {
     pressure,
     risk,
-    main_demand_profile: MOCK_PROFILES[h % MOCK_PROFILES.length],
     forecast_trend_pct: +(((h % 21) - 10) / 10).toFixed(1)   // -1.0 .. +1.0
   };
 }

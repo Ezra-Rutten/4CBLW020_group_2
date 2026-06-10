@@ -44,6 +44,15 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def no_cache(request, call_next):
+    """Dev convenience: stop browsers caching app.js/data.js/etc. so a plain
+    page reload always picks up frontend edits (no hard-refresh needed)."""
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 def _budget_csv(force: str) -> Path:
     return DATA_DIR / "allocation" / f"{force}budget_allocation.csv"
 
