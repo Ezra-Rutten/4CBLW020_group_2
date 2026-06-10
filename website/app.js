@@ -5,11 +5,11 @@
 // TOTAL available headcount, split across stations by that backend share (%).
 const resourceTypes=[
   {key:'general',        field:'base_allocation_pct', label:'General police officers',            short:'General', defaultValue:200},
-  {key:'mental_health',  field:'mental_health',       label:'Mental-health / welfare specialists', short:'MH',      defaultValue:80},
-  {key:'social_services',field:'social_services',     label:'Social-services / domestic support',  short:'Social',  defaultValue:50},
-  {key:'negotiator',     field:'negotiator',          label:'Negotiators',                         short:'Negot',   defaultValue:20},
-  {key:'k9',             field:'k9',                  label:'K9 units',                            short:'K9',      defaultValue:30},
-  {key:'swat',           field:'swat',                label:'Armed / SWAT response units',         short:'SWAT',    defaultValue:25}
+  {key:'mental_health',  field:'mental_health',       label:'Mental Health Specialist',             short:'MH',      defaultValue:80},
+  {key:'social_services',field:'social_services',     label:'Social Services',                     short:'Social',  defaultValue:50},
+  {key:'negotiator',     field:'negotiator',          label:'Negotiator',                          short:'Negot',   defaultValue:20},
+  {key:'k9',             field:'k9',                  label:'K9 (Police Dogs)',                    short:'K9',      defaultValue:30},
+  {key:'swat',           field:'swat',                label:'Specialist Firearms Officers',         short:'SFO',     defaultValue:25}
 ];
 const riskOrder=['Red','Orange','Yellow','Green'];
 const riskColors={Red:'#b91c1c',Orange:'#b45309',Yellow:'#a16207',Green:'#15803d'};
@@ -19,6 +19,24 @@ let currentCityData=null;   // payload for the selected city (fetched from backe
 const cityCache={};         // city name -> payload
 let cityList=[];            // [{city, force, station_count, incident_estimate}]
 let resources=Object.fromEntries(resourceTypes.map(r=>[r.key,r.defaultValue]));
+let metropolitanmap=null;
+let currentGeoLayer=null;
+let markers=[];
+const station_colors2={};
+const color_list2=[
+  '#e6194b','#3cb44b','#ffe119','#4363d8','#f58231',
+  '#911eb4','#42d4f4','#f032e6','#bfef45','#fabed4',
+  '#469990','#dcbeff','#9A6324','#fffac8','#800000',
+  '#aaffc3','#808000','#ffd8b1','#000075','#a9a9a9',
+  '#e6194b','#3cb44b','#ffe119','#4363d8','#f58231'
+];
+const city_map_configs={
+  London:    {center:[51.50,-0.10],zoom:10,geo:typeof lsoa_geo_london!=='undefined'?lsoa_geo_london:null,mapping:typeof lsoa_mapping_london!=='undefined'?lsoa_mapping_london:null},
+  Liverpool: {center:[53.41,-2.98],zoom:11,geo:typeof lsoa_geo_liverpool!=='undefined'?lsoa_geo_liverpool:null,mapping:typeof lsoa_mapping_liverpool!=='undefined'?lsoa_mapping_liverpool:null},
+  Birmingham:{center:[52.48,-1.90],zoom:11,geo:typeof lsoa_geo_birmingham!=='undefined'?lsoa_geo_birmingham:null,mapping:typeof lsoa_mapping_birmingham!=='undefined'?lsoa_mapping_birmingham:null},
+  Leeds:     {center:[53.80,-1.55],zoom:11,geo:typeof lsoa_geo_leeds!=='undefined'?lsoa_geo_leeds:null,mapping:typeof lsoa_mapping_leeds!=='undefined'?lsoa_mapping_leeds:null},
+  Sheffield: {center:[53.38,-1.47],zoom:11,geo:typeof lsoa_geo_sheffield!=='undefined'?lsoa_geo_sheffield:null,mapping:typeof lsoa_mapping_sheffield!=='undefined'?lsoa_mapping_sheffield:null},
+};
 const fmt=n=>Number(n||0).toLocaleString('en-GB');
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
@@ -85,6 +103,7 @@ async function init(){
   renderFolders();
 
   try{ await loadCity(currentCity); }catch(err){ showBackendError(err); return; }
+  initLeaflet();
   renderAll();
 }
 
@@ -133,7 +152,6 @@ function renderResources(){
     <div class="resource">
       <label for="resource-${item.key}">${esc(item.label)}</label>
       <input id="resource-${item.key}" type="number" min="0" max="250" value="${resources[item.key]}" data-key="${item.key}">
-      <input type="range" min="0" max="250" value="${resources[item.key]}" data-key="${item.key}" aria-label="${esc(item.label)}">
     </div>
   `).join('');
   document.querySelectorAll('#resources input').forEach(input=>{
@@ -193,16 +211,50 @@ function renderAllocationPanel(){
   }).join('');
 }
 
+function initLeaflet(){
+  if(_leafletMap||typeof L==='undefined') return;
+  _leafletMap=L.map('leaflet-map').setView([51.50,-0.10],10);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(_leafletMap);
+}
+
+function updateLeafletMap(cityName){
+  if(!_leafletMap) return;
+  const config=_cityMapConfigs[cityName];
+  if(!config) return;
+  _leafletMap.setView(config.center,config.zoom);
+  _leafletMarkers.forEach(m=>_leafletMap.removeLayer(m));
+  _leafletMarkers=[];
+  if(_geoLayer){_leafletMap.removeLayer(_geoLayer);_geoLayer=null;}
+  const stations=city()?.stations||[];
+  stations.forEach((s,i)=>{
+    const name=s.station.replace(' Police Station','');
+    if(!_stationColors[name]) _stationColors[name]=_colorPalette[i%_colorPalette.length];
+  });
+  if(config.geo&&config.mapping){
+    _geoLayer=L.geoJSON(config.geo,{
+      style:feature=>{
+        const code=feature.properties.LSOA21CD;
+        const station=config.mapping[code];
+        const color=_stationColors[station]||'#ccc';
+        return{fillColor:color,fillOpacity:0.6,color:'#666',weight:0.3};
+      }
+    }).addTo(_leafletMap);
+  }
+  stations.forEach(s=>{
+    if(!s.latitude||!s.longitude) return;
+    const name=s.station.replace(' Police Station','');
+    const m=L.marker([s.latitude,s.longitude])
+      .addTo(_leafletMap)
+      .bindTooltip(`<b>${esc(name)}</b><br>Risk: ${esc(s.risk)}<br>Pressure: ${s.pressure.toFixed(2)}`);
+    _leafletMarkers.push(m);
+  });
+}
+
 function renderMap(){
   const c=city();
-  const mapName={London:'london_lsoa_station_assignment.png',Birmingham:'birmingham_lsoa_station_assignment.png',Leeds:'leeds_lsoa_station_assignment.png',Sheffield:'sheffield_lsoa_station_assignment.png',Liverpool:'liverpool_lsoa_station_assignment.png'}[currentCity]||'london_lsoa_station_assignment.png';
   document.getElementById('mapTitle').textContent=`${currentCity} LSOA assignment`;
   document.getElementById('mapMeta').textContent=`${c.stations.length} stations`;
-  const wrap=document.getElementById('mapWrap');
-  wrap.innerHTML=`<img class="map-image" id="stationMapImg" alt="${esc(currentCity)} LSOA assignment map with police stations">`;
-  const img=document.getElementById('stationMapImg');
-  img.onerror=()=>{wrap.innerHTML='<div class="map-error">Map export not found in the website/maps folder.</div>';};
-  img.src=`maps/${mapName}`;
+  updateLeafletMap(currentCity);
 }
 
 function renderChart(){

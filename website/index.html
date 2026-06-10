@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Police Resource Forecasting Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <style>#leaflet-map{z-index:0;border-radius:8px;}</style>
 </head>
 <body>
 <header class="app-header">
@@ -68,7 +70,7 @@
         </div>
         <div class="mapbox">
           <div class="map-head"><strong id="mapTitle"></strong><span class="muted small" id="mapMeta"></span></div>
-          <div class="map-image-wrap" id="mapWrap"><img class="map-image" id="stationMapImg" alt="LSOA assignment map"></div>
+          <div class="map-image-wrap" id="mapWrap"><div id="leaflet-map" style="width:100%;height:500px;"></div></div>
         </div>
       </div>
     </div>
@@ -154,6 +156,8 @@
     </div>
   </section>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="data_dashboard/lsoa_all_data.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
