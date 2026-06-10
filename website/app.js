@@ -179,32 +179,16 @@ function renderRecommendation(){
   document.getElementById('recommendation').innerHTML=`Highest-priority station: <b>${esc(top.station)}</b><br>Suggested focus: ${focus}.`;
 }
 
-const SPECIALIST_KEYS=[
-  ['mental_health','MH'],
-  ['social_services','Social'],
-  ['negotiator','Negot'],
-  ['k9','K9'],
-  ['swat','SWAT']
-];
-
 function renderAllocationPanel(){
   const rows=[...city().stations].sort((a,b)=>b.pressure-a.pressure);
   document.getElementById('allocationPanel').innerHTML=rows.map(station=>{
     const chips=focusList(station).map(item=>`<span class="alloc-chip">${esc(item.label)} ${fmt(item.value)}</span>`).join('')||'<span class="alloc-chip">No capacity set</span>';
-    // Real backend allocation, carried on each station object from /api/city.
-    const pct=Number(station.budget_allocation_pct||0);
-    const budgetLine=` | backend budget <b>${pct.toFixed(2)}%</b>`;
-    const specialistChips=SPECIALIST_KEYS
-      .map(([key,label])=> station[key]!=null
-        ? `<span class="alloc-chip">${label} ${Number(station[key]).toFixed(2)}%</span>`
-        : '')
-      .join('');
     return `<div class="alloc-row">
       <div>
         <div class="alloc-station">${esc(station.station)}</div>
-        <div class="alloc-sub">${esc(station.postcode)} | predicted severity ${fmt(station.predicted_severity)}${budgetLine}</div>
+        <div class="alloc-sub">${esc(station.postcode)} | predicted severity ${fmt(station.predicted_severity)}</div>
       </div>
-      <div class="alloc-metrics">${chips}${specialistChips}</div>
+      <div class="alloc-metrics">${chips}</div>
     </div>`;
   }).join('');
 }
