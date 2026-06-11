@@ -227,12 +227,6 @@
       color: var(--ink-2);
       font-weight: 800;
     }
-    .resource input[type="range"] {
-      grid-column: 1 / -1;
-      width: 100%;
-      padding: 0;
-      accent-color: var(--blue);
-    }
     .note {
       border: 1px solid #99d7bf;
       border-radius: 8px;

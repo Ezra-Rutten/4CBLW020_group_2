@@ -212,41 +212,41 @@ function renderAllocationPanel(){
 }
 
 function initLeaflet(){
-  if(_leafletMap||typeof L==='undefined') return;
-  _leafletMap=L.map('leaflet-map').setView([51.50,-0.10],10);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(_leafletMap);
+  if(metropolitanmap||typeof L==='undefined') return;
+  metropolitanmap=L.map('leaflet-map').setView([51.50,-0.10],10);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(metropolitanmap);
 }
 
 function updateLeafletMap(cityName){
-  if(!_leafletMap) return;
-  const config=_cityMapConfigs[cityName];
+  if(!metropolitanmap) return;
+  const config=city_map_configs[cityName];
   if(!config) return;
-  _leafletMap.setView(config.center,config.zoom);
-  _leafletMarkers.forEach(m=>_leafletMap.removeLayer(m));
-  _leafletMarkers=[];
-  if(_geoLayer){_leafletMap.removeLayer(_geoLayer);_geoLayer=null;}
+  metropolitanmap.setView(config.center,config.zoom);
+  markers.forEach(m=>metropolitanmap.removeLayer(m));
+  markers=[];
+  if(currentGeoLayer){metropolitanmap.removeLayer(currentGeoLayer);currentGeoLayer=null;}
   const stations=city()?.stations||[];
   stations.forEach((s,i)=>{
     const name=s.station.replace(' Police Station','');
-    if(!_stationColors[name]) _stationColors[name]=_colorPalette[i%_colorPalette.length];
+    if(!station_colors2[name]) station_colors2[name]=color_list2[i%color_list2.length];
   });
   if(config.geo&&config.mapping){
-    _geoLayer=L.geoJSON(config.geo,{
+    currentGeoLayer=L.geoJSON(config.geo,{
       style:feature=>{
         const code=feature.properties.LSOA21CD;
         const station=config.mapping[code];
-        const color=_stationColors[station]||'#ccc';
+        const color=station_colors2[station]||'#ccc';
         return{fillColor:color,fillOpacity:0.6,color:'#666',weight:0.3};
       }
-    }).addTo(_leafletMap);
+    }).addTo(metropolitanmap);
   }
   stations.forEach(s=>{
     if(!s.latitude||!s.longitude) return;
     const name=s.station.replace(' Police Station','');
     const m=L.marker([s.latitude,s.longitude])
-      .addTo(_leafletMap)
+      .addTo(metropolitanmap)
       .bindTooltip(`<b>${esc(name)}</b><br>Risk: ${esc(s.risk)}<br>Pressure: ${s.pressure.toFixed(2)}`);
-    _leafletMarkers.push(m);
+    markers.push(m);
   });
 }
 
