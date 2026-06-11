@@ -151,13 +151,13 @@ function renderResources(){
   document.getElementById('resources').innerHTML=resourceTypes.map(item=>`
     <div class="resource">
       <label for="resource-${item.key}">${esc(item.label)}</label>
-      <input id="resource-${item.key}" type="number" min="0" max="250" value="${resources[item.key]}" data-key="${item.key}">
+      <input id="resource-${item.key}" type="number" min="0" value="${resources[item.key]}" data-key="${item.key}">
     </div>
   `).join('');
   document.querySelectorAll('#resources input').forEach(input=>{
     input.oninput=e=>{
       const key=e.target.dataset.key;
-      const value=clamp(Number(e.target.value)||0,0,250);
+      const value=Math.max(0,Number(e.target.value)||0);
       resources[key]=value;
       document.querySelectorAll(`#resources input[data-key="${key}"]`).forEach(pair=>{
         if(pair!==e.target) pair.value=value;
