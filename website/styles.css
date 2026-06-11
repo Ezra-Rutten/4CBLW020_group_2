@@ -487,3 +487,66 @@
       .alloc-metrics { justify-content: flex-start; }
       .map-image-wrap { min-height: 220px; }
     }
+
+    .budget-input-container {
+  margin-bottom: 20px;
+  padding: 12px;
+  background-color: #f8fafc; /* Ultra-light slate grey */
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.budget-input-container label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Style the text inputs for numbers */
+#budgetCapInput {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  max-width: 280px;
+  font-family: inherit;
+}
+
+#budgetCapInput:focus {
+  outline: none;
+  border-color: #3b82f6; /* Modern interactive blue focus */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Status: No budget limit set */
+.budget-none {
+  color: #64748b !important; /* Slate grey */
+  font-weight: 500;
+}
+
+/* Status: Under or exactly at budget */
+.budget-ok {
+  color: #16a34a !important; /* Professional Safe Green */
+  font-weight: 700;
+}
+
+/* Status: Exceeded budget cap (Includes high-visibility warning flash) */
+.budget-over {
+  color: #dc2626 !important; /* Warning Crimson Red */
+  font-weight: 800;
+  text-transform: uppercase;
+  animation: budget-alert-flash 1.5s infinite;
+}
+
+/* Soft flashing effect for over-budget states to catch attention immediately */
+@keyframes budget-alert-flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+  

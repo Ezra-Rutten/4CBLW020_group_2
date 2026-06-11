@@ -3,6 +3,18 @@
 // via predicted severity); the specialists use their own demand-share columns
 // (mental_health/social_services/negotiator/k9/swat). Each slider value is the
 // TOTAL available headcount, split across stations by that backend share (%).
+
+let userBudgetCap = 0; // Starts at 0 (unrestricted or unassigned)
+
+const salaryWeights = {
+  'general': 38000,        // Midpoint estimate for Constable scale
+  'mental_health': 45000,  // Experienced Band 6/7 NHS practitioner
+  'social_services': 37500,// Midpoint qualified Local Authority worker
+  'negotiator': 44000,     // Typical mid-career crisis response officer
+  'k9': 37000,             // Effective salary baseline for dog handler
+  'swat': 35496            // Glassdoor-verified average ARV/AFO baseline
+};
+
 const resourceTypes=[
   {key:'general',        field:'base_allocation_pct', label:'General police officers',            short:'General', defaultValue:200},
   {key:'mental_health',  field:'mental_health',       label:'Mental Health Specialist',             short:'MH',      defaultValue:80},
@@ -82,6 +94,8 @@ async function init(){
     currentCity=e.target.value;
     document.getElementById('searchBox').value='';
     document.getElementById('riskFilter').value='All';
+    userBudgetCap = 0;
+    if (document.getElementById('budgetCapInput')) document.getElementById('budgetCapInput').value = '';
     try{ await loadCity(currentCity); }catch(err){ showBackendError(err); return; }
     renderAll();
   };
@@ -99,6 +113,13 @@ async function init(){
   });
   document.getElementById('searchBox').oninput=renderStations;
   document.getElementById('riskFilter').onchange=renderStations;
+  const capInput = document.getElementById('budgetCapInput');
+  if (capInput) {
+    capInput.oninput = e => {
+      userBudgetCap = Math.max(0, Number(e.target.value) || 0);
+      renderMetrics(); // Instantly calculate costs when typing a budget cap
+    };
+  }
   renderResources();
   renderFolders();
 
@@ -122,12 +143,47 @@ function renderAll(){
 function renderMetrics(){
   const c=city();
   const peak=topStation();
-  document.getElementById('metrics').innerHTML=[
+  
+  // 1. Calculate live cumulative workforce expenditures
+  let totalCost = 0;
+  for (const key in resources) {
+    totalCost += (resources[key] || 0) * (salaryWeights[key] || 0);
+  }
+  
+  // 2. Compute advisory standing based on the optional budget cap
+  let statusText = 'No Cap Defined';
+  let statusClass = 'budget-none';
+  if (userBudgetCap > 0) {
+    if (totalCost > userBudgetCap) {
+      statusText = 'OVER BUDGET!';
+      statusClass = 'budget-over';
+    } else {
+      statusText = 'Within Cap';
+      statusClass = 'budget-ok';
+    }
+  }
+
+  // Generate the baseline operational metric cards
+  const baseMetrics = [
     ['Police force',c.force],
     ['Incident estimate',fmt(c.incident_estimate)],
     ['Stations in folder',c.stations.length],
     ['Peak pressure',peak?`${peak.pressure.toFixed(2)} - ${peak.station}`:'None']
   ].map(([label,value])=>`<div class="metric"><small>${esc(label)}</small><b title="${esc(value)}">${esc(value)}</b></div>`).join('');
+
+  // 3. Append the two new financial tracking cards to the layout stream
+  const budgetMetrics = `
+    <div class="metric">
+      <small>Total Workforce Cost</small>
+      <b>£${fmt(totalCost)}</b>
+    </div>
+    <div class="metric">
+      <small>Budget Advisory Standing</small>
+      <b class="${statusClass}">${esc(statusText)}</b>
+    </div>
+  `;
+
+  document.getElementById('metrics').innerHTML = baseMetrics + budgetMetrics;
 }
 
 function renderBriefing(){
@@ -165,6 +221,7 @@ function renderResources(){
       renderRecommendation();
       renderAllocationPanel();
       renderStations();
+      renderMetrics();
     };
   });
 }
