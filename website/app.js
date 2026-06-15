@@ -7,11 +7,11 @@
 let userBudgetCap = 0; // Starts at 0 (unrestricted or unassigned)
 
 const salaryWeights = {
-  'general': 38000,        // Midpoint estimate for Constable scale
+  'general': 40000,        // Midpoint estimate for Constable scale
   'mental_health': 45000,  // Experienced Band 6/7 NHS practitioner
   'social_services': 37500,// Midpoint qualified Local Authority worker
   'negotiator': 44000,     // Typical mid-career crisis response officer
-  'k9': 37000,             // Effective salary baseline for dog handler
+  'k9': 47000,             // Effective salary baseline for dog handler and expenses of handling the dog
   'swat': 35496            // Glassdoor-verified average ARV/AFO baseline
 };
 
