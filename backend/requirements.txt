@@ -1,6 +1,6 @@
 ﻿pandas
 geopandas
-xgboost
+lightgbm
 scikit-learn
 numpy
 matplotlib
