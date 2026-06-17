@@ -82,7 +82,7 @@
       <div class="section-head">
         <div>
           <h2>Dynamic station allocation</h2>
-          <p class="muted">Ranked by pressure, severity and matching specialist demand.</p>
+          <p class="muted">Ranked by allocation need and matching specialist demand.</p>
         </div>
       </div>
       <div class="allocation-shell" id="allocationPanel"></div>
@@ -117,16 +117,16 @@
       <div class="section-head">
         <div>
           <h2>Station-level allocation table</h2>
-          <p class="muted">Priority, forecast movement and recommended resource focus per station.</p>
+          <p class="muted">Priority, allocation need and recommended resource focus per station.</p>
         </div>
         <div class="table-tools">
           <input id="searchBox" type="search" placeholder="Search station or postcode">
-          <select id="riskFilter" aria-label="Risk filter"><option>All</option><option>Red</option><option>Orange</option><option>Yellow</option><option>Green</option></select>
+          <select id="riskFilter" aria-label="Risk filter"><option>All</option><option>Red</option><option>Yellow</option><option>Green</option></select>
         </div>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Station</th><th>Postcode</th><th>Priority</th><th>Pressure</th><th>Forecast</th><th>Recommended focus</th></tr></thead>
+          <thead><tr><th>Station</th><th>Postcode</th><th>Priority</th><th>Allocation need</th><th>Predicted severity</th><th>Recommended focus</th></tr></thead>
           <tbody id="stationRows"></tbody>
         </table>
       </div>

@@ -55,8 +55,30 @@ const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 function city(){return currentCityData}
 function riskColor(r){return riskColors[r]||'#64748b'}
 function riskClass(r){return riskOrder.includes(r)?r:'Green'}
-function topStation(){return city()&&city().stations.length?[...city().stations].sort((a,b)=>b.pressure-a.pressure)[0]:null}
-function maxPressure(){return Math.max(1,...city().stations.map(s=>Number(s.pressure)||0))}
+// Highest-priority station = the one that needs the largest allocation share.
+function topStation(){return city()&&city().stations.length?[...city().stations].sort((a,b)=>allocShare(b)-allocShare(a))[0]:null}
+
+// Real general-police allocation share each station needs (0..1 of the force),
+// from the backend budget file. Replaces the old mock "pressure" metric.
+function allocShare(station){return Number(station.base_allocation_pct)||0}
+function quantile(sorted,p){
+  if(!sorted.length) return 0;
+  const idx=(sorted.length-1)*p, lo=Math.floor(idx), hi=Math.ceil(idx);
+  return lo===hi?sorted[lo]:sorted[lo]*(hi-idx)+sorted[hi]*(idx-lo);
+}
+// Q1/Q3 of allocation need across the current city's stations.
+function allocThresholds(){
+  const sorted=city().stations.map(allocShare).sort((a,b)=>a-b);
+  return {q1:quantile(sorted,0.25),q3:quantile(sorted,0.75)};
+}
+// Three-level scale by quartile of "being affected": top quartile -> Red,
+// bottom quartile -> Green, the rest -> Yellow.
+function allocRisk(station,thr){
+  const v=allocShare(station);
+  if(v>=thr.q3) return 'Red';
+  if(v<=thr.q1) return 'Green';
+  return 'Yellow';
+}
 
 async function loadCity(name){
   if(cityCache[name]){ currentCityData=cityCache[name]; return; }
@@ -168,7 +190,7 @@ function renderMetrics(){
     ['Police force',c.force],
     ['Incident estimate',fmt(c.incident_estimate)],
     ['Stations in folder',c.stations.length],
-    ['Peak pressure',peak?`${peak.pressure.toFixed(2)} - ${peak.station}`:'None']
+    ['Peak allocation need',peak?`${(allocShare(peak)/100).toFixed(3)} - ${peak.station}`:'None']
   ].map(([label,value])=>`<div class="metric"><small>${esc(label)}</small><b title="${esc(value)}">${esc(value)}</b></div>`).join('');
 
   // 3. Append the two new financial tracking cards to the layout stream
@@ -189,15 +211,18 @@ function renderMetrics(){
 function renderBriefing(){
   const c=city();
   const stations=c.stations;
-  const counts=Object.fromEntries(riskOrder.map(r=>[r,stations.filter(s=>s.risk===r).length]));
+  const thr=allocThresholds();
+  const levelOrder=['Red','Yellow','Green'];
+  const counts=Object.fromEntries(levelOrder.map(r=>[r,stations.filter(s=>allocRisk(s,thr)===r).length]));
   const total=Math.max(1,stations.length);
+  const peak=topStation();
   document.getElementById('briefing').innerHTML=`${esc(c.note)}<br><br><span class="path">backend/data (force: ${esc(c.force)})</span>`;
   document.getElementById('riskSummary').innerHTML=[
     ['Red',counts.Red],
-    ['Orange',counts.Orange],
-    ['Peak',topStation()?topStation().pressure.toFixed(2):'0.00']
+    ['Yellow',counts.Yellow],
+    ['Peak',peak?(allocShare(peak)/100).toFixed(3):'0.000']
   ].map(([label,value])=>`<div class="risk-cell"><span class="meta-label">${esc(label)}</span><b>${esc(value)}</b></div>`).join('');
-  document.getElementById('riskStrip').innerHTML=riskOrder.map(r=>{
+  document.getElementById('riskStrip').innerHTML=levelOrder.map(r=>{
     const width=counts[r]?Math.max(4,counts[r]/total*100):0;
     return `<span title="${r}: ${counts[r]}" style="width:${width}%;background:${riskColor(r)}"></span>`;
   }).join('');
@@ -255,7 +280,7 @@ function renderRecommendation(){
 }
 
 function renderAllocationPanel(){
-  const rows=[...city().stations].sort((a,b)=>b.pressure-a.pressure);
+  const rows=[...city().stations].sort((a,b)=>allocShare(b)-allocShare(a));
   document.getElementById('allocationPanel').innerHTML=rows.map(station=>{
     const chips=focusList(station).map(item=>`<span class="alloc-chip">${esc(item.label)} ${fmt(item.value)}</span>`).join('')||'<span class="alloc-chip">No capacity set</span>';
     return `<div class="alloc-row">
@@ -297,12 +322,13 @@ function updateLeafletMap(cityName){
       }
     }).addTo(metropolitanmap);
   }
+  const thr=allocThresholds();
   stations.forEach(s=>{
     if(!s.latitude||!s.longitude) return;
     const name=s.station.replace(' Police Station','');
     const m=L.marker([s.latitude,s.longitude])
       .addTo(metropolitanmap)
-      .bindTooltip(`<b>${esc(name)}</b><br>Risk: ${esc(s.risk)}<br>Pressure: ${s.pressure.toFixed(2)}`);
+      .bindTooltip(`<b>${esc(name)}</b><br>Priority: ${esc(allocRisk(s,thr))}<br>Allocation need: ${(allocShare(s)/100).toFixed(3)}`);
     markers.push(m);
   });
 }
@@ -342,24 +368,25 @@ function renderTopCrimes(){
 function renderStations(){
   const query=(document.getElementById('searchBox').value||'').toLowerCase().trim();
   const risk=document.getElementById('riskFilter').value;
-  const pressureMax=maxPressure();
+  const thr=allocThresholds();
+  const allocMax=Math.max(1,...city().stations.map(allocShare));
   const rows=city().stations
-    .filter(station=>(risk==='All'||station.risk===risk)&&(`${station.station} ${station.postcode}`.toLowerCase().includes(query)))
-    .sort((a,b)=>b.pressure-a.pressure);
+    .filter(station=>(risk==='All'||allocRisk(station,thr)===risk)&&(`${station.station} ${station.postcode}`.toLowerCase().includes(query)))
+    .sort((a,b)=>allocShare(b)-allocShare(a));
   if(!rows.length){
     document.getElementById('stationRows').innerHTML='<tr><td colspan="6" class="empty-state">No stations match the current filter.</td></tr>';
     return;
   }
   document.getElementById('stationRows').innerHTML=rows.map(station=>{
-    const meterWidth=clamp(station.pressure/pressureMax*100,6,100);
-    const forecast=`${station.forecast_trend_pct>0?'+':''}${station.forecast_trend_pct}%`;
+    const level=allocRisk(station,thr);
+    const meterWidth=clamp(allocShare(station)/allocMax*100,6,100);
     const focus=focusList(station,3).map(item=>`${esc(item.label)} ${fmt(item.value)}`).join(', ')||'No capacity set';
     return `<tr>
       <td><b>${esc(station.station)}</b></td>
       <td>${esc(station.postcode)}</td>
-      <td><span class="badge ${riskClass(station.risk)}">${esc(station.risk)}</span></td>
-      <td><div class="pressure"><span>${station.pressure.toFixed(2)}</span><span class="meter"><span style="width:${meterWidth}%;background:${riskColor(station.risk)}"></span></span></div></td>
-      <td>${esc(forecast)}</td>
+      <td><span class="badge ${riskClass(level)}">${esc(level)}</span></td>
+      <td><div class="pressure"><span>${(allocShare(station)/100).toFixed(3)}</span><span class="meter"><span style="width:${meterWidth}%;background:${riskColor(level)}"></span></span></div></td>
+      <td>${fmt(station.predicted_severity)}</td>
       <td>${focus}</td>
     </tr>`;
   }).join('');
@@ -377,6 +404,7 @@ function renderFolders(){
 
 function renderFolderDetail(){
   const c=city();
+  const thr=allocThresholds();
   document.getElementById('selectedFolder').innerHTML=`
     <p class="city-title">backend/data (force: ${esc(c.force)})</p>
     <div class="grid three">
@@ -388,7 +416,7 @@ function renderFolderDetail(){
     <div class="station-list">${c.stations.map(station=>`
       <div class="station-card">
         <div><b>${esc(station.station)}</b><br><span>${esc(station.postcode)}</span></div>
-        <span class="badge ${riskClass(station.risk)}">${esc(station.risk)}</span>
+        <span class="badge ${riskClass(allocRisk(station,thr))}">${esc(allocRisk(station,thr))}</span>
       </div>
     `).join('')}</div>`;
 }
