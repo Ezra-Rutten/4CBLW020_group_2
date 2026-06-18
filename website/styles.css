@@ -334,9 +334,10 @@
     .bar::after {
       content: attr(data-value);
       position: absolute;
-      top: -20px;
+      top: -26px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) rotate(-40deg);
+      transform-origin: bottom center;
       color: #41506a;
       font-size: 10px;
       font-weight: 800;
