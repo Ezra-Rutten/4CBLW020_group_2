@@ -50,6 +50,7 @@ const city_map_configs={
   Sheffield: {center:[53.38,-1.47],zoom:11,geo:typeof lsoa_geo_sheffield!=='undefined'?lsoa_geo_sheffield:null,mapping:typeof lsoa_mapping_sheffield!=='undefined'?lsoa_mapping_sheffield:null},
 };
 const fmt=n=>Number(n||0).toLocaleString('en-GB');
+const fmtShort=n=>{const v=Number(n||0);if(v>=1_000_000)return(v/1_000_000).toFixed(1)+'M';if(v>=1_000)return(v/1_000).toFixed(1)+'K';return String(v);};
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 function city(){return currentCityData}
@@ -216,7 +217,7 @@ function renderBriefing(){
   const counts=Object.fromEntries(levelOrder.map(r=>[r,stations.filter(s=>allocRisk(s,thr)===r).length]));
   const total=Math.max(1,stations.length);
   const peak=topStation();
-  document.getElementById('briefing').innerHTML=`${esc(c.note)}<br><br><span class="path">backend/data (force: ${esc(c.force)})</span>`;
+  document.getElementById('briefing').innerHTML=`${esc(c.note)}`;
   document.getElementById('riskSummary').innerHTML=[
     ['Red',counts.Red],
     ['Yellow',counts.Yellow],
@@ -349,7 +350,7 @@ function renderChart(){
   const max=Math.max(1,...data.map(d=>Number(d.count)||0));
   document.getElementById('forecastChart').innerHTML=data.map(d=>{
     const height=Math.max(10,(Number(d.count)||0)/max*250);
-    return `<div class="bar" data-value="${fmt(d.count)}" style="height:${height}px"><span>${esc(d.label)}</span></div>`;
+    return `<div class="bar" data-value="${fmtShort(d.count)}" title="${fmt(d.count)}" style="height:${height}px"><span>${esc(d.label)}</span></div>`;
   }).join('');
 }
 
