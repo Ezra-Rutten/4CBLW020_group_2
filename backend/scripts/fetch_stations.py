@@ -30,7 +30,6 @@ stations = [
     # Birmingham
     ("Bournville Police Station", "B30 1QX", "west-midlands"),
     ("Stechford Police Station", "B33 8RR", "west-midlands"),
-    ("Sutton Coldfield Police Station", "B74 2NR", "west-midlands"),
     ("Coventry Central Police Station", "CV1 2JX", "west-midlands"),
     ("Brierley Hill Police Station", "DY5 3DH", "west-midlands"),
     ("West Bromwich Police Station", "B70 8HS", "west-midlands"),
