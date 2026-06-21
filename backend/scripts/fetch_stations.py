@@ -77,7 +77,7 @@ def fetch_stations(output_path: str = "../data/shape/police_stations.csv"):
                 longitude = data["longitude"]
                 writer.writerow([name, postcode, police_force, latitude, longitude])
             else:
-                writer.writerow([name, postcode, police_force, None, None])
+                writer.writerow([name, postcode, police_force, latitude, longitude])
             time.sleep(0.2)
 
     print(f"\nDataset written to {output_path}")

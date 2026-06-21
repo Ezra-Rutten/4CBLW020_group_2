@@ -1,5 +1,4 @@
 import pandas as pd
-import xgboost as xgb
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error
