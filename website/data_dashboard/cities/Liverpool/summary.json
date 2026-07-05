@@ -1,0 +1,10 @@
+{
+  "city": "Liverpool",
+  "police_force": "Merseyside Police",
+  "center": [
+    53.4084,
+    -2.9916
+  ],
+  "note": "Prepared with Merseyside stations from the group station code.",
+  "incident_estimate": 319500
+}

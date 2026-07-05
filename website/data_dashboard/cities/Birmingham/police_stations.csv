@@ -1,0 +1,10 @@
+station,postcode,force,latitude,longitude,pressure,risk,main_demand_profile,forecast_trend_pct,predicted_severity
+Bournville Police Station,B30 1QX,West Midlands Police,52.429,-1.935,2.85,Orange,Welfare and public-order demand,0.7,2970
+Stechford Police Station,B33 8RR,West Midlands Police,52.484,-1.81,2.46,Orange,Violence and safeguarding demand,1.2,2701
+Sutton Coldfield Police Station,B74 2NR,West Midlands Police,52.563,-1.824,2.12,Orange,Welfare and public-order demand,0.1,2482
+Coventry Central Police Station,CV1 2JX,West Midlands Police,52.408,-1.51,2.33,Orange,Violence and safeguarding demand,0.6,2813
+Brierley Hill Police Station,DY5 3DH,West Midlands Police,52.48,-2.12,1.99,Orange,Welfare and public-order demand,1.1,2594
+West Bromwich Police Station,B70 8HS,West Midlands Police,52.519,-1.995,1.66,Orange,Violence and safeguarding demand,0.0,2376
+Solihull Police Station,B91 3QL,West Midlands Police,52.414,-1.78,1.87,Orange,Welfare and public-order demand,0.5,2707
+Bloxwich Police Station,WS3 2PD,West Midlands Police,52.618,-2.004,1.53,Yellow,Violence and safeguarding demand,1.0,2488
+Wolverhampton Police Station,WV1 3AA,West Midlands Police,52.586,-2.129,1.19,Yellow,Welfare and public-order demand,-0.1,2269

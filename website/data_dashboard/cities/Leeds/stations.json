@@ -1,0 +1,62 @@
+[
+  {
+    "station": "Leeds District HQ Police Station",
+    "postcode": "LS11 8BU",
+    "force": "West Yorkshire Police",
+    "latitude": 53.775,
+    "longitude": -1.548,
+    "pressure": 2.85,
+    "risk": "Orange",
+    "main_demand_profile": "Mixed general demand",
+    "forecast_trend_pct": 0.2,
+    "predicted_severity": 2970
+  },
+  {
+    "station": "Wakefield District HQ Police Station",
+    "postcode": "WF6 1FD",
+    "force": "West Yorkshire Police",
+    "latitude": 53.682,
+    "longitude": -1.498,
+    "pressure": 2.35,
+    "risk": "Orange",
+    "main_demand_profile": "Mobile response demand",
+    "forecast_trend_pct": 0.7,
+    "predicted_severity": 2590
+  },
+  {
+    "station": "Bradford District HQ Police Station",
+    "postcode": "BD5 0DZ",
+    "force": "West Yorkshire Police",
+    "latitude": 53.785,
+    "longitude": -1.754,
+    "pressure": 1.9,
+    "risk": "Orange",
+    "main_demand_profile": "Mixed general demand",
+    "forecast_trend_pct": 1.2,
+    "predicted_severity": 2260
+  },
+  {
+    "station": "Halifax District HQ Police Station",
+    "postcode": "HX1 5TW",
+    "force": "West Yorkshire Police",
+    "latitude": 53.721,
+    "longitude": -1.862,
+    "pressure": 2.0,
+    "risk": "Orange",
+    "main_demand_profile": "Mobile response demand",
+    "forecast_trend_pct": 0.1,
+    "predicted_severity": 2480
+  },
+  {
+    "station": "Kirklees District HQ Police Station",
+    "postcode": "HD1 2NJ",
+    "force": "West Yorkshire Police",
+    "latitude": 53.646,
+    "longitude": -1.784,
+    "pressure": 1.55,
+    "risk": "Yellow",
+    "main_demand_profile": "Mixed general demand",
+    "forecast_trend_pct": 0.6,
+    "predicted_severity": 2150
+  }
+]

@@ -7,4 +7,5 @@ matplotlib
 folium
 shapely
 requests
-
+joblib
+lightgbm

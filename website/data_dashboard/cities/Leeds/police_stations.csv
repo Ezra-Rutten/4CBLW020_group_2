@@ -1,0 +1,6 @@
+station,postcode,force,latitude,longitude,pressure,risk,main_demand_profile,forecast_trend_pct,predicted_severity
+Leeds District HQ Police Station,LS11 8BU,West Yorkshire Police,53.775,-1.548,2.85,Orange,Mixed general demand,0.2,2970
+Wakefield District HQ Police Station,WF6 1FD,West Yorkshire Police,53.682,-1.498,2.35,Orange,Mobile response demand,0.7,2590
+Bradford District HQ Police Station,BD5 0DZ,West Yorkshire Police,53.785,-1.754,1.9,Orange,Mixed general demand,1.2,2260
+Halifax District HQ Police Station,HX1 5TW,West Yorkshire Police,53.721,-1.862,2.0,Orange,Mobile response demand,0.1,2480
+Kirklees District HQ Police Station,HD1 2NJ,West Yorkshire Police,53.646,-1.784,1.55,Yellow,Mixed general demand,0.6,2150

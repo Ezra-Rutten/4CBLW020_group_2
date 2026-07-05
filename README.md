@@ -1,29 +1,27 @@
-# 4CBLW020 Group 2
+# Police Resource Allocation — Setup & Run
 
-## Setup
+## Install dependencies
 
-Install dependencies:
+pip install -r requirements.txt
 
-```
-pip install -r backend/requirements.txt
-```
+## Required input data (must be in place before running)
 
-## Data
+- backend/data/raw/ → monthly crime CSVs
+- backend/data/LB_shp/ → London Borough shapefiles
+- backend/data/forc_kmls/ → police force KML boundaries
 
-Place the Metropolitan Police crime CSV files inside `backend/data/raw/`, organized by month:
+## Run the pipeline (from backend/scripts/)
 
-The `backend/data/processed/` folder will be created automatically when you run the pipeline.
+# Step 1 — run both, order doesn't matter
 
-## Running the pipeline
+python preprocess_data.py # combines raw CSVs → data/processed/
+python fetch_stations.py # fetches station coordinates → data/shape/police_stations.csv
 
-From the `backend/services/` directory:
+# Step 2 — run after step 1
 
-```
-python data.py
-```
+python build_lsoa_map.py # maps LSOAs to stations → data/shape/lsoa_station_map.csv
+python train_model.py # trains XGBoost model → models/prediction_model.pkl
 
-This reads all CSVs from `data/raw/`, combines them, and saves the result to `data/processed/london_all_data_uncleaned.csv`.
+# Step 3 — run after step 2
 
-## Running the notebooks
-
-Open the notebooks from `backend/notebooks/` in Jupyter. Run `data.py` first to generate the processed data before running any notebook.
+python generate_predictions.py # generates predictions + budget → data/processed/

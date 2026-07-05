@@ -1,0 +1,5 @@
+station,postcode,force,latitude,longitude,pressure,risk,main_demand_profile,forecast_trend_pct,predicted_severity
+Snig Hill Police Station,S3 8LY,South Yorkshire Police,53.383,-1.466,2.85,Orange,Property investigation demand,0.6,2970
+Rotherham Police Station,S60 1QY,South Yorkshire Police,53.43,-1.36,2.29,Orange,Retail and theft demand,1.1,2528
+Barnsley Police Station,S70 2DL,South Yorkshire Police,53.552,-1.479,1.77,Orange,Property investigation demand,0.0,2135
+Doncaster Police Station,DN1 3HX,South Yorkshire Police,53.523,-1.132,1.81,Orange,Retail and theft demand,0.5,2292

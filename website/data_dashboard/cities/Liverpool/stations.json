@@ -1,0 +1,122 @@
+[
+  {
+    "station": "St Annes Street Police Station",
+    "postcode": "L3 3HJ",
+    "force": "Merseyside Police",
+    "latitude": 53.417,
+    "longitude": -2.982,
+    "pressure": 2.85,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 0.6,
+    "predicted_severity": 2970
+  },
+  {
+    "station": "Birkenhead Police Station",
+    "postcode": "CH41 5EU",
+    "force": "Merseyside Police",
+    "latitude": 53.391,
+    "longitude": -3.026,
+    "pressure": 2.48,
+    "risk": "Orange",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 1.1,
+    "predicted_severity": 2715
+  },
+  {
+    "station": "Huyton Police Station",
+    "postcode": "L36 9XU",
+    "force": "Merseyside Police",
+    "latitude": 53.409,
+    "longitude": -2.843,
+    "pressure": 2.15,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 0.0,
+    "predicted_severity": 2510
+  },
+  {
+    "station": "St Helens Police Station",
+    "postcode": "WA10 1TG",
+    "force": "Merseyside Police",
+    "latitude": 53.454,
+    "longitude": -2.736,
+    "pressure": 2.38,
+    "risk": "Orange",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 0.5,
+    "predicted_severity": 2855
+  },
+  {
+    "station": "Southport Police Station",
+    "postcode": "PR9 0LL",
+    "force": "Merseyside Police",
+    "latitude": 53.648,
+    "longitude": -3.005,
+    "pressure": 2.05,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 1.0,
+    "predicted_severity": 2650
+  },
+  {
+    "station": "Admiral Street Police Station",
+    "postcode": "L8 8JN",
+    "force": "Merseyside Police",
+    "latitude": 53.387,
+    "longitude": -2.973,
+    "pressure": 1.73,
+    "risk": "Orange",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": -0.1,
+    "predicted_severity": 2445
+  },
+  {
+    "station": "Wallasey Police Station",
+    "postcode": "CH44 1DA",
+    "force": "Merseyside Police",
+    "latitude": 53.423,
+    "longitude": -3.057,
+    "pressure": 1.95,
+    "risk": "Orange",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": 0.4,
+    "predicted_severity": 2790
+  },
+  {
+    "station": "Kirkby Police Station",
+    "postcode": "L32 8RF",
+    "force": "Merseyside Police",
+    "latitude": 53.481,
+    "longitude": -2.889,
+    "pressure": 1.62,
+    "risk": "Yellow",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 0.9,
+    "predicted_severity": 2585
+  },
+  {
+    "station": "Newton-Le-Willows Police Station",
+    "postcode": "WA12 9BW",
+    "force": "Merseyside Police",
+    "latitude": 53.454,
+    "longitude": -2.631,
+    "pressure": 1.3,
+    "risk": "Yellow",
+    "main_demand_profile": "Property investigation demand",
+    "forecast_trend_pct": -0.2,
+    "predicted_severity": 2380
+  },
+  {
+    "station": "Marsh Lane Police Station",
+    "postcode": "L20 5BW",
+    "force": "Merseyside Police",
+    "latitude": 53.467,
+    "longitude": -3.004,
+    "pressure": 1.52,
+    "risk": "Yellow",
+    "main_demand_profile": "Retail and theft demand",
+    "forecast_trend_pct": 0.3,
+    "predicted_severity": 2725
+  }
+]

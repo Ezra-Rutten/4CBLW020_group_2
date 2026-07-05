@@ -1,0 +1,110 @@
+[
+  {
+    "station": "Bournville Police Station",
+    "postcode": "B30 1QX",
+    "force": "West Midlands Police",
+    "latitude": 52.429,
+    "longitude": -1.935,
+    "pressure": 2.85,
+    "risk": "Orange",
+    "main_demand_profile": "Welfare and public-order demand",
+    "forecast_trend_pct": 0.7,
+    "predicted_severity": 2970
+  },
+  {
+    "station": "Stechford Police Station",
+    "postcode": "B33 8RR",
+    "force": "West Midlands Police",
+    "latitude": 52.484,
+    "longitude": -1.81,
+    "pressure": 2.46,
+    "risk": "Orange",
+    "main_demand_profile": "Violence and safeguarding demand",
+    "forecast_trend_pct": 1.2,
+    "predicted_severity": 2701
+  },
+  {
+    "station": "Sutton Coldfield Police Station",
+    "postcode": "B74 2NR",
+    "force": "West Midlands Police",
+    "latitude": 52.563,
+    "longitude": -1.824,
+    "pressure": 2.12,
+    "risk": "Orange",
+    "main_demand_profile": "Welfare and public-order demand",
+    "forecast_trend_pct": 0.1,
+    "predicted_severity": 2482
+  },
+  {
+    "station": "Coventry Central Police Station",
+    "postcode": "CV1 2JX",
+    "force": "West Midlands Police",
+    "latitude": 52.408,
+    "longitude": -1.51,
+    "pressure": 2.33,
+    "risk": "Orange",
+    "main_demand_profile": "Violence and safeguarding demand",
+    "forecast_trend_pct": 0.6,
+    "predicted_severity": 2813
+  },
+  {
+    "station": "Brierley Hill Police Station",
+    "postcode": "DY5 3DH",
+    "force": "West Midlands Police",
+    "latitude": 52.48,
+    "longitude": -2.12,
+    "pressure": 1.99,
+    "risk": "Orange",
+    "main_demand_profile": "Welfare and public-order demand",
+    "forecast_trend_pct": 1.1,
+    "predicted_severity": 2594
+  },
+  {
+    "station": "West Bromwich Police Station",
+    "postcode": "B70 8HS",
+    "force": "West Midlands Police",
+    "latitude": 52.519,
+    "longitude": -1.995,
+    "pressure": 1.66,
+    "risk": "Orange",
+    "main_demand_profile": "Violence and safeguarding demand",
+    "forecast_trend_pct": 0.0,
+    "predicted_severity": 2376
+  },
+  {
+    "station": "Solihull Police Station",
+    "postcode": "B91 3QL",
+    "force": "West Midlands Police",
+    "latitude": 52.414,
+    "longitude": -1.78,
+    "pressure": 1.87,
+    "risk": "Orange",
+    "main_demand_profile": "Welfare and public-order demand",
+    "forecast_trend_pct": 0.5,
+    "predicted_severity": 2707
+  },
+  {
+    "station": "Bloxwich Police Station",
+    "postcode": "WS3 2PD",
+    "force": "West Midlands Police",
+    "latitude": 52.618,
+    "longitude": -2.004,
+    "pressure": 1.53,
+    "risk": "Yellow",
+    "main_demand_profile": "Violence and safeguarding demand",
+    "forecast_trend_pct": 1.0,
+    "predicted_severity": 2488
+  },
+  {
+    "station": "Wolverhampton Police Station",
+    "postcode": "WV1 3AA",
+    "force": "West Midlands Police",
+    "latitude": 52.586,
+    "longitude": -2.129,
+    "pressure": 1.19,
+    "risk": "Yellow",
+    "main_demand_profile": "Welfare and public-order demand",
+    "forecast_trend_pct": -0.1,
+    "predicted_severity": 2269
+  }
+]

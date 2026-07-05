@@ -1,0 +1,118 @@
+{
+  "city": "London",
+  "police_force": "Metropolitan Police",
+  "center": [
+    51.5074,
+    -0.1278
+  ],
+  "note": "Uses the current London/Ezra EDA input and the Metropolitan station list from police_shape.py.",
+  "incident_estimate": 3415852,
+  "monthly_crime_counts": [
+    {
+      "month": "2025-03",
+      "count": 93571
+    },
+    {
+      "month": "2025-04",
+      "count": 93211
+    },
+    {
+      "month": "2025-05",
+      "count": 99386
+    },
+    {
+      "month": "2025-06",
+      "count": 100914
+    },
+    {
+      "month": "2025-07",
+      "count": 106677
+    },
+    {
+      "month": "2025-08",
+      "count": 99050
+    },
+    {
+      "month": "2025-09",
+      "count": 93280
+    },
+    {
+      "month": "2025-10",
+      "count": 98545
+    },
+    {
+      "month": "2025-11",
+      "count": 94209
+    },
+    {
+      "month": "2025-12",
+      "count": 90961
+    },
+    {
+      "month": "2026-01",
+      "count": 86692
+    },
+    {
+      "month": "2026-02",
+      "count": 84636
+    }
+  ],
+  "crime_type_counts": [
+    {
+      "crime_type": "Anti-social behaviour",
+      "count": 693470
+    },
+    {
+      "crime_type": "Bicycle theft",
+      "count": 45010
+    },
+    {
+      "crime_type": "Burglary",
+      "count": 155014
+    },
+    {
+      "crime_type": "Criminal damage and arson",
+      "count": 167214
+    },
+    {
+      "crime_type": "Drugs",
+      "count": 130318
+    },
+    {
+      "crime_type": "Other crime",
+      "count": 35690
+    },
+    {
+      "crime_type": "Other theft",
+      "count": 340604
+    },
+    {
+      "crime_type": "Possession of weapons",
+      "count": 15428
+    },
+    {
+      "crime_type": "Public order",
+      "count": 171171
+    },
+    {
+      "crime_type": "Robbery",
+      "count": 96925
+    },
+    {
+      "crime_type": "Shoplifting",
+      "count": 232572
+    },
+    {
+      "crime_type": "Theft from the person",
+      "count": 256543
+    },
+    {
+      "crime_type": "Vehicle crime",
+      "count": 282230
+    },
+    {
+      "crime_type": "Violence and sexual offences",
+      "count": 793663
+    }
+  ]
+}
